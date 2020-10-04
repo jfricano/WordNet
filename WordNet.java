@@ -13,10 +13,11 @@ public class WordNet {
   LinearProbingHashST<String, Bag<Integer>> nouns;
   ArrayList<String> synsetIdx;
   Digraph wordNet;
+  // SAP sap;
 
-  // constructor takes the name of the two input files
   /**
    * constructs a new WordNet object using file input
+   * 
    * @param synsets   name of file containing synsets as CSVs 
    *                  (<integer id>, <synset (words separated by whitespace)>, 
    *                   <gloss (not used here)>)
@@ -59,10 +60,14 @@ public class WordNet {
       for (int i = 1; i < line.length; i++) 
         wordNet.addEdge(Integer.parseInt(line[0]), Integer.parseInt(line[i]));
     }
+
+    // instantiate the sap object
+    // SAP sap = new SAP(wordNet);
   }
 
   /**
    * returns all nouns in the WordNet object in arbitrary order
+   * 
    * @return all nouns in the WordNet object in arbitrary order
    */
   public Iterable<String> nouns() {
@@ -73,6 +78,7 @@ public class WordNet {
 
   /**
    * is the word a WordNet noun?
+   * 
    * @param word  the word to be queried
    * @return      is the word present in the WordNet object?
    */
@@ -81,21 +87,56 @@ public class WordNet {
     return nouns.contains(word);
   }
 
-  // distance between nounA and nounB (defined below)
+  // NEED TO DO SOME WORK HERE
+  // NOT ENTIRELY CLEAR EXTENT TO WHICH ARE DIFFERENT THAN SAP METHODS
+  /**
+   * distance between nounA and nounB
+   * 
+   * @param nounA noun to be queried
+   * @param nounB noun to be queried
+   * @return      distance between nounA and nounB
+   */
+  // WILL THIS BE THE SAME AS LENGTH??
   public int distance(String nounA, String nounB) {
-    return 0;
+    // should I instantiate an sap object as a class field?
+    // or just call it here??
+    // or maybe i'm doing this wrong altogeher
+    // same for sap below
+    return new SAP(wordNet).length(nouns.get(nounA), nouns.get(nounB));
   }
-
-  // a synset (second field of synsets.txt) 
-  //  that is the common ancestor of nounA and nounB
-  //  in a shortest ancestral path (defined below)
+  
+  /**
+   * closest common ancestor of nounA and nounB
+   * 
+   * @param   nounA noun to be queried
+   * @param   nounB noun to be queried
+   * @return  closest ancestor of nounA and nounB,
+   *          as a whitespace-separated synset of nouns in a String
+   */
+  // WILL USE SAP.ancestor(), BUT WILL NOT NECC. BE THE SAME B/C WANT THE SHORTEST HERE
   public String sap(String nounA, String nounB) {
-    return "";
+    return synsetIdx.get(new SAP(wordNet).ancestor(nouns.get(nounA), nouns.get(nounB)));
   }
 
   // do unit testing of this class
+  /**
+   * unit testing of this class
+   * 
+   * @param args filenames from which to instantiate the WordNet object
+   */
   public static void main(String[] args) {
+    // test synset constructors and nouns() method
     WordNet a = new WordNet(args[0], args[1]);
-    for (String str : a.nouns()) StdOut.println(str);
+    for (String str : a.nouns()) {
+      StdOut.println(str);
+      Bag<Integer> ids = a.nouns.get(str);
+      for (int id : ids) StdOut.print(id + "  ");
+      StdOut.println();
+    }
+
+    StdOut.println();
+
+    // test digraph constructor
+    StdOut.println(a.wordNet.toString());
   }
 }
