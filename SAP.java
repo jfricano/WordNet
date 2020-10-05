@@ -1,10 +1,11 @@
 import edu.princeton.cs.algs4.Digraph;
 
 public class SAP {
+  Digraph G;
 
   // constructor takes a digraph (not necessarily a DAG)
   public SAP(Digraph G) {
-
+    this.G = G;
   }
 
   // length of shortest ancestral path between v and w; -1 if no such path
@@ -12,7 +13,7 @@ public class SAP {
     return 0;
   }
 
-  // a common ancestor of v and w that participates in a shortest ancestral path;
+  // a (not necessarily the shortest) common ancestor of v and w that participates in a shortest ancestral path;
   // -1 if no such path
   public int ancestor(int v, int w) {
     return 0;
@@ -24,7 +25,7 @@ public class SAP {
     return 0;
   }
 
-  // a common ancestor that participates in shortest ancestral path; -1 if no such
+  // A (not necessarily the shortest) common ancestor that participates in shortest ancestral path; -1 if no such
   // path
   public int ancestor(Iterable<Integer> v, Iterable<Integer> w) {
     return 0;
