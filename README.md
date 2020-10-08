@@ -16,10 +16,10 @@ Note:  These files depend on libraries imported from Princeton University's open
 <h2>WordNet.java</h2>
 <b>The WordNet digraph.</b> The WordNet object is represented as a directed graph (digraph).  Each vertex v is an integer that represents a synset, and each directed edge v→w represents that w is a hypernym of v. The WordNet digraph is a rooted DAG: it is acyclic and has one vertex—the root—that is an ancestor of every other vertex. However, it is not necessarily a tree because a synset can have more than one hypernym. A small subgraph of the WordNet digraph appears below.
 
-<b>The WordNet input file formats.</b> We now describe the two data files that you will use to create the WordNet digraph. The files are in comma-separated values (CSV) format: each line contains a sequence of fields, separated by commas.
+<b>The WordNet input file formats.</b> The files are in comma-separated values (CSV) format: each line contains a sequence of fields, separated by commas.
 
 <ul>
-<li>List of synsets. The file synsets.txt contains all noun synsets in WordNet, one per line. Line i of the file (counting from 0) contains the information for synset i. The first field is the synset id, which is always the integer i; the second field is the synonym set (or synset); and the third field is its dictionary definition (or gloss), which is not relevant to this assignment.</li>
+<li>List of synsets. The file synsets.txt contains all noun synsets in WordNet, one per line. Line i of the file (counting from 0) contains the information for synset i. The first field is the synset id, which is always the integer i; the second field is the synonym set (or synset); and the third field is its dictionary definition (or gloss), which is not relevant to this project.</li>
 
 <li>List of hypernyms. The file hypernyms.txt contains the hypernym relationships. Line i of the file (counting from 0) contains the hypernyms of synset i. The first field is the synset id, which is always the integer i; subsequent fields are the id numbers of the synset’s hypernyms.</li>
 </ul>
@@ -49,7 +49,7 @@ Note:  These files depend on libraries imported from Princeton University's open
 <b>Performance.</b>  WordNet uses space linear in the input size (size of synsets and hypernyms files). The constructor should takes time linear in the input size. The method isNoun() runs in time constant. The methods distance() and sap() run in time linear in the size of the WordNet digraph.
 
 <h2>SAP.java</h2>
-<b>Shortest ancestral path.</b> An ancestral path between two vertices v and w in a digraph is a directed path from v to a common ancestor x, together with a directed path from w to the same ancestor x. A shortest ancestral path is an ancestral path of minimum total length. We refer to the common ancestor in a shortest ancestral path as a shortest common ancestor. Note also that an ancestral path is a path, but not a directed path.
+<b>Shortest ancestral path.</b> An ancestral path between two vertices v and w in a digraph is a directed path from v to a common ancestor x, together with a directed path from w to the same ancestor x. A shortest ancestral path is an ancestral path of minimum total length. We refer to the common ancestor in a shortest ancestral path as a shortest common ancestor.
 
 <b>SAP data type.</b> SAP Implements an immutable data type SAP with the following API:
 
@@ -71,7 +71,7 @@ Note:  These files depend on libraries imported from Princeton University's open
 	// do unit testing of this class
 	public static void main(String[] args)
 
-<b>Performance</b>  All methods (and the constructor)  take time at most proportional to E + V in the worst case, where E and V are the number of edges and vertices in the digraph, respectively. The data type uses space proportional to E + V.
+<b>Performance.</b>  All methods (and the constructor) take time at most proportional to E + V in the worst case, where E and V are the number of edges and vertices in the digraph, respectively. The data type uses space proportional to E + V.
 
 <b>Test client.</b> The  test client takes the name of a digraph input file as as a command-line argument, constructs the digraph, reads in vertex pairs from standard input, and prints out the length of the shortest ancestral path between the two vertices and a common ancestor that participates in that path.
 
