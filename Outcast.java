@@ -1,12 +1,21 @@
 public class Outcast {
   private final WordNet wordnet;
 
-  // constructor takes a WordNet object
+  /**
+   * constructs Outcast object
+   * 
+   * @param wordnet wordnet object in which search will be conducted
+   */
   public Outcast(WordNet wordnet) {
     this.wordnet = wordnet;
   }
 
-  // given an array of WordNet nouns, return an outcast
+  /**
+   * returns an outcast given array of WordNet nouns
+   * 
+   * @param nouns wordnet nouns to be queried
+   * @return      outcast, i.e. the least related noun, among nouns in passed array
+   */
   public String outcast(String[] nouns) {
     String outkast = "";
     int outkastDist = -1;
@@ -25,8 +34,12 @@ public class Outcast {
     return outkast;
   }
 
-  // see test client below
+  /**
+   * main method not used
+   * 
+   * @param args
+   */
   public static void main(String[] args) {
-
+    // main method not used
   }
 }
