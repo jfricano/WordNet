@@ -2,3 +2,4 @@ data/.*
 data/*.iml
 data/*.png
 wordnet.zip
+graderOutput.txt
