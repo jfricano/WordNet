@@ -1,8 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
 
-import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
-// import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Queue;
@@ -11,14 +9,46 @@ import edu.princeton.cs.algs4.StdOut;
 public class SAP {
   private Digraph G;
 
-  // constructor takes a digraph (not necessarily a DAG)
+  /**
+   * initializes SAP object from a directed graph
+   * 
+   * @param G the Digraph
+   */
   public SAP(Digraph G) {
     this.G = G;
   }
 
-  // length of shortest ancestral path between v and w; -1 if no such path
+  /**
+   * length of shortest ancestral path between two vertices
+   * 
+   * @param v first source vertex 
+   * @param w second source vertex
+   * @return length of shortest ancestral path between v and w; -1 if no such path
+   */
   public int length(int v, int w) {
-    return 0;
+    Map<Integer, Integer> vPaths = getPaths(v);
+    int sap = -1;
+    HashMap<Integer, Integer> wPaths = new HashMap<>();
+    Queue<Integer> q = new Queue<>();
+    int s = w;
+
+    wPaths.put(s, 0);
+    q.enqueue(s);
+
+    while (!q.isEmpty()) {
+      int x = q.dequeue();
+      for (int y : G.adj(x)) {
+        if (!wPaths.containsKey(y)) {
+          wPaths.put(y, wPaths.get(x) + 1);
+          q.enqueue(y);
+        }
+      }
+      if (vPaths.containsKey(x) && 
+          (sap == -1 || vPaths.get(x) + wPaths.get(x) < sap)) {
+        sap = vPaths.get(x) + wPaths.get(x);
+      }
+    }
+    return sap;
   }
 
   /**
@@ -34,7 +64,7 @@ public class SAP {
     // run bfs from w to root,
     //    if the node is found in v bfs,
     //    get the total dist and cmp to running total
-    Map<Integer, Integer> vPaths = pathDist(v);
+    Map<Integer, Integer> vPaths = getPaths(v);
     int sap = -1;
     HashMap<Integer, Integer> wPaths = new HashMap<>();
     Queue<Integer> q = new Queue<>();
@@ -59,10 +89,11 @@ public class SAP {
     return sap;
   }
 
+  // helper function
   // uses bfs to search from vertex s to root
   // returns hashMap of all vertices from path v to root
   // key is vertex, value is distance from v
-  private Map<Integer, Integer> pathDist(int s) {
+  private Map<Integer, Integer> getPaths(int s) {
     HashMap<Integer, Integer> pathMap = new HashMap<>();
     Queue<Integer> q = new Queue<>();
     
@@ -110,7 +141,7 @@ public class SAP {
     SAP sap = new SAP(G);
     for (int i = 0; i < G.V(); i++) {
       for (int j = i; j < G.V(); j++) {
-        StdOut.println(i + ", " + j + ":\t" + sap.ancestor(i, j));
+        StdOut.println(i + ", " + j + ":\t\t" + sap.ancestor(i, j) + "\t" + sap.length(i, j));
       }
     }
   }
