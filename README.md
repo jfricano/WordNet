@@ -71,7 +71,7 @@ Note:  These files depend on libraries imported from Princeton University's open
 	// do unit testing of this class
 	public static void main(String[] args)
 
-<b>Performance requirements.</b>  All methods (and the constructor)  take time at most proportional to E + V in the worst case, where E and V are the number of edges and vertices in the digraph, respectively. The data type uses space proportional to E + V.
+<b>Performance</b>  All methods (and the constructor)  take time at most proportional to E + V in the worst case, where E and V are the number of edges and vertices in the digraph, respectively. The data type uses space proportional to E + V.
 
 <b>Test client.</b> The  test client takes the name of a digraph input file as as a command-line argument, constructs the digraph, reads in vertex pairs from standard input, and prints out the length of the shortest ancestral path between the two vertices and a common ancestor that participates in that path.
 
