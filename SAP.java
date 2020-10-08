@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Queue;
@@ -28,7 +29,11 @@ public class SAP {
    * @return length of shortest ancestral path between v and w; -1 if no such path
    */
   public int length(int v, int w) {
-    return getShortest(v, w)[1];
+    Bag<Integer> vBag = new Bag<>();
+    Bag<Integer> wBag = new Bag<>();
+    vBag.add(v);
+    wBag.add(w);
+    return getShortest(vBag, wBag)[1];
   }
 
   /**
@@ -39,43 +44,40 @@ public class SAP {
    * @return  vertex that is shortest common ancestor to both v and w (-1 if none)
    */
   public int ancestor(int v, int w) {
-    return getShortest(v, w)[0];
+    Bag<Integer> vBag = new Bag<>();
+    Bag<Integer> wBag = new Bag<>();
+    vBag.add(v);
+    wBag.add(w);
+    return getShortest(vBag, wBag)[0];
   }
 
   // length of shortest ancestral path between any vertex in v and any vertex in
   // w; -1 if no such path
   public int length(Iterable<Integer> v, Iterable<Integer> w) {
-    // int queryLength;
-    // int minLength = -1;
-    // for (int i : v) {
-    //   for (int j : w) {
-    //     queryLength = length(i, j);
-    //     if (queryLength == -1) continue;
-    //     if (queryLength < minLength || minLength == -1) minLength = queryLength;
-    //   }
-    // }
-    // return minLength;
-    return 0;
+    return getShortest(v, w)[1];
   }
 
   // A (not necessarily the shortest) common ancestor that participates in shortest ancestral path; -1 if no such
   // path
   public int ancestor(Iterable<Integer> v, Iterable<Integer> w) {
-    return 0;
+    return getShortest(v, w)[0];
   }
 
   // *************************** PRIVATE METHODS ***************************
-  // run bfs from v to root, 
-  //    add each vertex as key, distance as value
-  // run bfs from w to root,
-  //    if the node is found in v bfs,
-  //    get the total dist and cmp to running total
-  private int[] getShortest(int v, int w) {
+  // helper function for sap() and length()
+  // takes in two iterables of vertices
+  // returns an array consisting of the shortest common ancestor and length of ancestral path
+  // between the most closely related vertices of each of the two subsets
+  private int[] getShortest(Iterable<Integer> v, Iterable<Integer> w) {
     Map<Integer, Integer> vPaths = getPaths(v);
     Map<Integer, Integer> wPaths = getPaths(w);
     int shortestLen = -1;
     int sap = -1;
 
+    // iterate through the vertices in the w paths
+    // if the vertex is also found in the v path,
+    //    compare the total distance to the current champion
+    //    update champion if shorter
     for (Map.Entry<Integer, Integer> entry : wPaths.entrySet()) {
       int wVertex = entry.getKey();
       int wDist = entry.getValue();
@@ -88,16 +90,19 @@ public class SAP {
     return new int[] {sap, shortestLen};
   }
 
-  // helper function
-  // uses bfs to search from vertex s to root
-  // returns hashMap of all vertices from path v to root
-  // key is vertex, value is distance from v
-  private Map<Integer, Integer> getPaths(int s) {
+  // helper function to search for all paths (and lengths) 
+  // from each vertex in iterable s to root, using bfs
+  // returns hashMap of all vertices from path v to root:
+  //    key is vertex, value is distance from v
+  private Map<Integer, Integer> getPaths(Iterable<Integer> s) {
     HashMap<Integer, Integer> pathMap = new HashMap<>();
     Queue<Integer> q = new Queue<>();
+
+    for (int v : s) {
+      pathMap.put(v, 0);
+      q.enqueue(v);
+    }
     
-    pathMap.put(s, 0);
-    q.enqueue(s);
     while (!q.isEmpty()) {
       int v = q.dequeue();
       for (int w : G.adj(v)) {
@@ -120,10 +125,19 @@ public class SAP {
     In in = new In(args[0]);
     Digraph G = new Digraph(in);
     SAP sap = new SAP(G);
+    
+    // test ancestor(), length() with two single vertices
     for (int i = 0; i < G.V(); i++) {
       for (int j = i; j < G.V(); j++) {
         StdOut.println(i + ", " + j + ":\t\t" + sap.ancestor(i, j) + "\t" + sap.length(i, j));
       }
     }
+
+    // test ancestor(), length() with bags of vertices
+    Bag<Integer> v = new Bag<>();
+    Bag<Integer> w = new Bag<>();
+    v.add(7); v.add(0);
+    w.add(12); w.add(11);
+    StdOut.println(sap.ancestor(v, w) + "\t" + sap.length(v, w));
   }
 }
