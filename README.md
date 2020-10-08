@@ -49,6 +49,7 @@ Note:  These files depend on libraries imported from Princeton University's open
 <b>Performance.</b>  WordNet uses space linear in the input size (size of synsets and hypernyms files). The constructor should takes time linear in the input size. The method isNoun() runs in time constant. The methods distance() and sap() run in time linear in the size of the WordNet digraph.
 
 <h2>SAP.java</h2>
+
 <b>Shortest ancestral path.</b> An ancestral path between two vertices v and w in a digraph is a directed path from v to a common ancestor x, together with a directed path from w to the same ancestor x. A shortest ancestral path is an ancestral path of minimum total length. We refer to the common ancestor in a shortest ancestral path as a shortest common ancestor.
 
 <b>SAP data type.</b> SAP Implements an immutable data type SAP with the following API:
