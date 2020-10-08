@@ -56,16 +56,16 @@ Note:  These files depend on libraries imported from Princeton University's open
 	// constructor takes a digraph (not necessarily a DAG)
 	public SAP(Digraph G)
 
-	// length of shortest ancestral path between v and w; -1 if no such path
+	// length of shortest ancestral path between v and w
 	public int length(int v, int w)
 
-	// a common ancestor of v and w that participates in a shortest ancestral path; -1 if no such path
+	// a common ancestor of v and w that participates in a shortest ancestral path
 	public int ancestor(int v, int w)
 
-	// length of shortest ancestral path between any vertex in v and any vertex in w; -1 if no such path
+	// length of shortest ancestral path between any vertex in v and any vertex in w
 	public int length(Iterable<Integer> v, Iterable<Integer> w)
 
-	// a common ancestor that participates in shortest ancestral path; -1 if no such path
+	// a common ancestor that participates in shortest ancestral path
 	public int ancestor(Iterable<Integer> v, Iterable<Integer> w)
 
 	// do unit testing of this class
@@ -94,5 +94,5 @@ Outcast implements an immutable data type with the following API:
 	public String outcast(String[] nouns)   // given an array of WordNet nouns, return an outcast
 	public static void main(String[] args)  // test client (not used)
 
-<h2>Data files for unit testing<h2>
+<h2>Data files for unit testing</h2>
 These text files can be found in the data subfolder.
