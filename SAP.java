@@ -9,6 +9,7 @@ import edu.princeton.cs.algs4.StdOut;
 public class SAP {
   private Digraph G;
 
+  // *************************** CONSTRUCTOR ***************************
   /**
    * initializes SAP object from a directed graph
    * 
@@ -18,6 +19,7 @@ public class SAP {
     this.G = G;
   }
 
+  // *************************** PUBLIC METHODS ***************************
   /**
    * length of shortest ancestral path between two vertices
    * 
@@ -40,6 +42,29 @@ public class SAP {
     return getShortest(v, w)[0];
   }
 
+  // length of shortest ancestral path between any vertex in v and any vertex in
+  // w; -1 if no such path
+  public int length(Iterable<Integer> v, Iterable<Integer> w) {
+    // int queryLength;
+    // int minLength = -1;
+    // for (int i : v) {
+    //   for (int j : w) {
+    //     queryLength = length(i, j);
+    //     if (queryLength == -1) continue;
+    //     if (queryLength < minLength || minLength == -1) minLength = queryLength;
+    //   }
+    // }
+    // return minLength;
+    return 0;
+  }
+
+  // A (not necessarily the shortest) common ancestor that participates in shortest ancestral path; -1 if no such
+  // path
+  public int ancestor(Iterable<Integer> v, Iterable<Integer> w) {
+    return 0;
+  }
+
+  // *************************** PRIVATE METHODS ***************************
   // run bfs from v to root, 
   //    add each vertex as key, distance as value
   // run bfs from w to root,
@@ -47,27 +72,17 @@ public class SAP {
   //    get the total dist and cmp to running total
   private int[] getShortest(int v, int w) {
     Map<Integer, Integer> vPaths = getPaths(v);
+    Map<Integer, Integer> wPaths = getPaths(w);
     int shortestLen = -1;
     int sap = -1;
-    HashMap<Integer, Integer> wPaths = new HashMap<>();
-    Queue<Integer> q = new Queue<>();
-    int s = w;
 
-    wPaths.put(s, 0);
-    q.enqueue(s);
-
-    while (!q.isEmpty()) {
-      int x = q.dequeue();
-      for (int y : G.adj(x)) {
-        if (!wPaths.containsKey(y)) {
-          wPaths.put(y, wPaths.get(x) + 1);
-          q.enqueue(y);
-        }
-      }
-      if (vPaths.containsKey(x) && 
-          (shortestLen == -1 || vPaths.get(x) + wPaths.get(x) < shortestLen)) {
-        sap = x;
-        shortestLen = vPaths.get(x) + wPaths.get(x);
+    for (Map.Entry<Integer, Integer> entry : wPaths.entrySet()) {
+      int wVertex = entry.getKey();
+      int wDist = entry.getValue();
+      if (vPaths.containsKey(wVertex) && 
+          (vPaths.get(wVertex) + wDist < shortestLen || shortestLen == -1)) {
+        sap = wVertex;
+        shortestLen = vPaths.get(wVertex) + wDist;
       }
     }
     return new int[] {sap, shortestLen};
@@ -95,33 +110,15 @@ public class SAP {
     return pathMap;
   }
 
-  // length of shortest ancestral path between any vertex in v and any vertex in
-  // w; -1 if no such path
-  public int length(Iterable<Integer> v, Iterable<Integer> w) {
-    // int queryLength;
-    // int minLength = -1;
-    // for (int i : v) {
-    //   for (int j : w) {
-    //     queryLength = length(i, j);
-    //     if (queryLength == -1) continue;
-    //     if (queryLength < minLength || minLength == -1) minLength = queryLength;
-    //   }
-    // }
-    // return minLength;
-    return 0;
-  }
-
-  // A (not necessarily the shortest) common ancestor that participates in shortest ancestral path; -1 if no such
-  // path
-  public int ancestor(Iterable<Integer> v, Iterable<Integer> w) {
-    return 0;
-  }
-
-  // do unit testing of this class
+  //*************************** MAIN METHOD ***************************
+  /**
+   * unit testing
+   * 
+   * @param args name of the file holding data to construct digraph
+   */
   public static void main(String[] args) {
-    In in = new In("data/digraph1.txt");
+    In in = new In(args[0]);
     Digraph G = new Digraph(in);
-    // StdOut.println(G.toString());
     SAP sap = new SAP(G);
     for (int i = 0; i < G.V(); i++) {
       for (int j = i; j < G.V(); j++) {
