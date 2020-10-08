@@ -26,7 +26,28 @@ public class SAP {
    * @return length of shortest ancestral path between v and w; -1 if no such path
    */
   public int length(int v, int w) {
+    return getShortest(v, w)[1];
+  }
+
+  /**
+   * Returns shortest common ancestor to two source vertices of a digraph
+   * 
+   * @param v first source vertex
+   * @param w second source vertex
+   * @return  vertex that is shortest common ancestor to both v and w (-1 if none)
+   */
+  public int ancestor(int v, int w) {
+    return getShortest(v, w)[0];
+  }
+
+  // run bfs from v to root, 
+  //    add each vertex as key, distance as value
+  // run bfs from w to root,
+  //    if the node is found in v bfs,
+  //    get the total dist and cmp to running total
+  private int[] getShortest(int v, int w) {
     Map<Integer, Integer> vPaths = getPaths(v);
+    int shortestLen = -1;
     int sap = -1;
     HashMap<Integer, Integer> wPaths = new HashMap<>();
     Queue<Integer> q = new Queue<>();
@@ -44,49 +65,12 @@ public class SAP {
         }
       }
       if (vPaths.containsKey(x) && 
-          (sap == -1 || vPaths.get(x) + wPaths.get(x) < sap)) {
-        sap = vPaths.get(x) + wPaths.get(x);
-      }
-    }
-    return sap;
-  }
-
-  /**
-   * Returns shortest common ancestor to two source vertices of a digraph
-   * 
-   * @param v first source vertex
-   * @param w second source vertex
-   * @return  vertex that is shortest common ancestor to both v and w (-1 if none)
-   */
-  public int ancestor(int v, int w) {
-    // run bfs from v to root, 
-    //    add each vertex as key, distance as value
-    // run bfs from w to root,
-    //    if the node is found in v bfs,
-    //    get the total dist and cmp to running total
-    Map<Integer, Integer> vPaths = getPaths(v);
-    int sap = -1;
-    HashMap<Integer, Integer> wPaths = new HashMap<>();
-    Queue<Integer> q = new Queue<>();
-    int s = w;
-
-    wPaths.put(s, 0);
-    q.enqueue(s);
-
-    while (!q.isEmpty()) {
-      int x = q.dequeue();
-      for (int y : G.adj(x)) {
-        if (!wPaths.containsKey(y)) {
-          wPaths.put(y, wPaths.get(x) + 1);
-          q.enqueue(y);
-        }
-      }
-      if (vPaths.containsKey(x) && (sap == -1 || vPaths.get(x) + wPaths.get(x) < 
-                                                 vPaths.get(sap) + wPaths.get(sap))) {
+          (shortestLen == -1 || vPaths.get(x) + wPaths.get(x) < shortestLen)) {
         sap = x;
+        shortestLen = vPaths.get(x) + wPaths.get(x);
       }
     }
-    return sap;
+    return new int[] {sap, shortestLen};
   }
 
   // helper function
@@ -135,7 +119,7 @@ public class SAP {
 
   // do unit testing of this class
   public static void main(String[] args) {
-    In in = new In("data/digraph25.txt");
+    In in = new In("data/digraph1.txt");
     Digraph G = new Digraph(in);
     // StdOut.println(G.toString());
     SAP sap = new SAP(G);
