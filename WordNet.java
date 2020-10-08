@@ -5,12 +5,13 @@ import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.Topological;
 
 public class WordNet {
   private LinearProbingHashST<String, Bag<Integer>> nouns;  // to look up synsetID by noun
   private ArrayList<String> synsetIdx;   // to look up nouns by synset ID
   private Digraph wordNet;    // noun relationships
-  private SAP sap;            // shortest ancestor
+  // private SAP sap;         // shortest ancestor
 
   /**
    * constructs a new WordNet object using file input
@@ -22,10 +23,14 @@ public class WordNet {
    *                  (hyponym, hypernym)
    */
   public WordNet(String synsets, String hypernyms) {
+    if (synsets == null || hypernyms == null) 
+      throw new IllegalArgumentException("constructor called with null input");
+
     In in;                    // file to be read in
     String[] line, synset;    // line read in, synset read from line
     int id;                   // synset id
     Bag<Integer> value;       // value to be associated with noun (as key)
+    int roots;                // will count roots of digraph for testing whether it's rooted
 
     nouns = new LinearProbingHashST<>();
     synsetIdx = new ArrayList<>();
@@ -58,8 +63,18 @@ public class WordNet {
         wordNet.addEdge(Integer.parseInt(line[0]), Integer.parseInt(line[i]));
     }
 
+    // throw exception if not a rooted DAG
+    if (!new Topological(wordNet).hasOrder())
+      throw new IllegalArgumentException("digraph created by input is not a DAG");
+    
+    roots = 0;
+    for (int i = 0; i < synsetIdx.size(); i++) {
+      if (wordNet.outdegree(i) == 0 && ++roots > 1) 
+        throw new IllegalArgumentException("digraph created by input is not rooted");
+    }
+
     // instantiate the sap object
-    sap = new SAP(wordNet);
+    // sap = new SAP(wordNet);
   }
 
   /**
@@ -93,7 +108,9 @@ public class WordNet {
    */
   // WILL THIS BE THE SAME AS LENGTH??
   public int distance(String nounA, String nounB) {
-    return sap.length(nouns.get(nounA), nouns.get(nounB));
+    if ( nounA == null || nounB == null || !isNoun(nounA) || !isNoun(nounB)) 
+      throw new IllegalArgumentException("distance() called with null argument");
+    return new SAP(wordNet).length(nouns.get(nounA), nouns.get(nounB));
   }
   
   /**
@@ -105,7 +122,9 @@ public class WordNet {
    *          as a whitespace-separated synset of nouns in a String
    */
   public String sap(String nounA, String nounB) {
-    return synsetIdx.get(sap.ancestor(nouns.get(nounA), nouns.get(nounB)));
+    if (nounA == null || nounB == null || !isNoun(nounA) || !isNoun(nounB)) 
+      throw new IllegalArgumentException("sap() called with null argument");
+    return synsetIdx.get(new SAP(wordNet).ancestor(nouns.get(nounA), nouns.get(nounB)));
   }
 
   /**
@@ -126,6 +145,6 @@ public class WordNet {
     StdOut.println();
 
     // test digraph constructor
-    StdOut.println(a.wordNet.toString());
+    StdOut.println(a.wordNet);
   }
 }
