@@ -17,6 +17,8 @@ public class SAP {
    * @param G the Digraph
    */
   public SAP(Digraph G) {
+    if (G == null) 
+      throw new IllegalArgumentException("constructor with null argument");
     this.G = G;
   }
 
@@ -29,6 +31,8 @@ public class SAP {
    * @return length of shortest ancestral path between v and w; -1 if no such path
    */
   public int length(int v, int w) {
+    if (v < 0 || w < 0 || v > G.V() || w > G.V()) 
+      throw new IllegalArgumentException("argument out of bounds of digraph");
     Bag<Integer> vBag = new Bag<>();
     Bag<Integer> wBag = new Bag<>();
     vBag.add(v);
@@ -44,6 +48,8 @@ public class SAP {
    * @return  vertex that is shortest common ancestor to both v and w (-1 if none)
    */
   public int ancestor(int v, int w) {
+    if (v < 0 || w < 0 || v > G.V() || w > G.V()) 
+      throw new IllegalArgumentException("argument out of bounds of digraph");
     Bag<Integer> vBag = new Bag<>();
     Bag<Integer> wBag = new Bag<>();
     vBag.add(v);
@@ -54,12 +60,16 @@ public class SAP {
   // length of shortest ancestral path between any vertex in v and any vertex in
   // w; -1 if no such path
   public int length(Iterable<Integer> v, Iterable<Integer> w) {
+    if (v == null || w == null) 
+      throw new IllegalArgumentException("length() called with null argument");
     return getShortest(v, w)[1];
   }
 
   // A (not necessarily the shortest) common ancestor that participates in shortest ancestral path; -1 if no such
   // path
   public int ancestor(Iterable<Integer> v, Iterable<Integer> w) {
+    if (v == null || w == null) 
+      throw new IllegalArgumentException("ancestor() called with null argument");
     return getShortest(v, w)[0];
   }
 
@@ -98,7 +108,8 @@ public class SAP {
     HashMap<Integer, Integer> pathMap = new HashMap<>();
     Queue<Integer> q = new Queue<>();
 
-    for (int v : s) {
+    for (Integer v : s) {
+      if (v == null) throw new IllegalArgumentException("source vertex contains null argument");
       pathMap.put(v, 0);
       q.enqueue(v);
     }
