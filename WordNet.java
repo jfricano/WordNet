@@ -7,13 +7,10 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 
 public class WordNet {
-  // hash table to hold nouns; key is word, value is ID
-  // array of bag<> objects to hold IDs and associated synsets, ID = array index
-  // digraph to hold relationships
-  LinearProbingHashST<String, Bag<Integer>> nouns;
-  ArrayList<String> synsetIdx;
-  Digraph wordNet;
-  // SAP sap;
+  private LinearProbingHashST<String, Bag<Integer>> nouns;  // to look up synsetID by noun
+  private ArrayList<String> synsetIdx;   // to look up nouns by synset ID
+  private Digraph wordNet;    // noun relationships
+  private SAP sap;            // shortest ancestor
 
   /**
    * constructs a new WordNet object using file input
@@ -62,7 +59,7 @@ public class WordNet {
     }
 
     // instantiate the sap object
-    // SAP sap = new SAP(wordNet);
+    sap = new SAP(wordNet);
   }
 
   /**
@@ -87,8 +84,6 @@ public class WordNet {
     return nouns.contains(word);
   }
 
-  // NEED TO DO SOME WORK HERE
-  // NOT ENTIRELY CLEAR EXTENT TO WHICH ARE DIFFERENT THAN SAP METHODS
   /**
    * distance between nounA and nounB
    * 
@@ -98,11 +93,7 @@ public class WordNet {
    */
   // WILL THIS BE THE SAME AS LENGTH??
   public int distance(String nounA, String nounB) {
-    // should I instantiate an sap object as a class field?
-    // or just call it here??
-    // or maybe i'm doing this wrong altogeher
-    // same for sap below
-    return new SAP(wordNet).length(nouns.get(nounA), nouns.get(nounB));
+    return sap.length(nouns.get(nounA), nouns.get(nounB));
   }
   
   /**
@@ -113,16 +104,14 @@ public class WordNet {
    * @return  closest ancestor of nounA and nounB,
    *          as a whitespace-separated synset of nouns in a String
    */
-  // WILL USE SAP.ancestor(), BUT WILL NOT NECC. BE THE SAME B/C WANT THE SHORTEST HERE
   public String sap(String nounA, String nounB) {
-    return synsetIdx.get(new SAP(wordNet).ancestor(nouns.get(nounA), nouns.get(nounB)));
+    return synsetIdx.get(sap.ancestor(nouns.get(nounA), nouns.get(nounB)));
   }
 
-  // do unit testing of this class
   /**
-   * unit testing of this class
+   * unit testing 
    * 
-   * @param args filenames from which to instantiate the WordNet object
+   * @param args filenames from which to construct the WordNet object
    */
   public static void main(String[] args) {
     // test synset constructors and nouns() method
