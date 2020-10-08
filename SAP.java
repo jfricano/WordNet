@@ -64,17 +64,20 @@ public class SAP {
   }
 
   // *************************** PRIVATE METHODS ***************************
-  // run bfs from v to root, 
-  //    add each vertex as key, distance as value
-  // run bfs from w to root,
-  //    if the node is found in v bfs,
-  //    get the total dist and cmp to running total
+  // helper function for sap() and length()
+  // takes in two iterables of vertices
+  // returns an array consisting of the shortest common ancestor and length of ancestral path
+  // between the most closely related vertices of each of the two subsets
   private int[] getShortest(Iterable<Integer> v, Iterable<Integer> w) {
     Map<Integer, Integer> vPaths = getPaths(v);
     Map<Integer, Integer> wPaths = getPaths(w);
     int shortestLen = -1;
     int sap = -1;
 
+    // iterate through the vertices in the w paths
+    // if the vertex is also found in the v path,
+    //    compare the total distance to the current champion
+    //    update champion if shorter
     for (Map.Entry<Integer, Integer> entry : wPaths.entrySet()) {
       int wVertex = entry.getKey();
       int wDist = entry.getValue();
@@ -87,10 +90,10 @@ public class SAP {
     return new int[] {sap, shortestLen};
   }
 
-  // helper function
-  // uses bfs to search from vertex s to root
-  // returns hashMap of all vertices from path v to root
-  // key is vertex, value is distance from v
+  // helper function to search for all paths (and lengths) 
+  // from each vertex in iterable s to root, using bfs
+  // returns hashMap of all vertices from path v to root:
+  //    key is vertex, value is distance from v
   private Map<Integer, Integer> getPaths(Iterable<Integer> s) {
     HashMap<Integer, Integer> pathMap = new HashMap<>();
     Queue<Integer> q = new Queue<>();
