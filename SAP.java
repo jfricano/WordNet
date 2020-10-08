@@ -3,12 +3,12 @@ import java.util.Map;
 
 import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.Digraph;
-import edu.princeton.cs.algs4.In;
+// import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Queue;
-import edu.princeton.cs.algs4.StdOut;
+// import edu.princeton.cs.algs4.StdOut;
 
 public class SAP {
-  private Digraph G;
+  private final Digraph G;
 
   // *************************** CONSTRUCTOR ***************************
   /**
@@ -19,7 +19,7 @@ public class SAP {
   public SAP(Digraph G) {
     if (G == null) 
       throw new IllegalArgumentException("constructor with null argument");
-    this.G = G;
+    this.G = new Digraph(G);
   }
 
   // *************************** PUBLIC METHODS ***************************
@@ -133,22 +133,22 @@ public class SAP {
    * @param args name of the file holding data to construct digraph
    */
   public static void main(String[] args) {
-    In in = new In(args[0]);
-    Digraph G = new Digraph(in);
-    SAP sap = new SAP(G);
+    // In in = new In(args[0]);
+    // Digraph G = new Digraph(in);
+    // SAP sap = new SAP(G);
     
-    // test ancestor(), length() with two single vertices
-    for (int i = 0; i < G.V(); i++) {
-      for (int j = i; j < G.V(); j++) {
-        StdOut.println(i + ", " + j + ":\t\t" + sap.ancestor(i, j) + "\t" + sap.length(i, j));
-      }
-    }
+    // // test ancestor(), length() with two single vertices
+    // for (int i = 0; i < G.V(); i++) {
+    //   for (int j = i; j < G.V(); j++) {
+    //     StdOut.println(i + ", " + j + ":\t\t" + sap.ancestor(i, j) + "\t" + sap.length(i, j));
+    //   }
+    // }
 
-    // test ancestor(), length() with bags of vertices
-    Bag<Integer> v = new Bag<>();
-    Bag<Integer> w = new Bag<>();
-    v.add(7); v.add(0);
-    w.add(12); w.add(11);
-    StdOut.println(sap.ancestor(v, w) + "\t" + sap.length(v, w));
+    // // test ancestor(), length() with bags of vertices
+    // Bag<Integer> v = new Bag<>();
+    // Bag<Integer> w = new Bag<>();
+    // v.add(7); v.add(0);
+    // w.add(12); w.add(11);
+    // StdOut.println(sap.ancestor(v, w) + "\t" + sap.length(v, w));
   }
 }
