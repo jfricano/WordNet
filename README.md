@@ -6,7 +6,7 @@
   <li><a href="https://algs4.cs.princeton.edu/code/algs4.jar">Dowload Princeton's algs4.jar package</a></li>
 </ul>
 
-<b>CHallenge. </b>
+<b>Challenge. </b>
 <a href="https://wordnet.princeton.edu/">WordNet</a> is a semantic lexicon for the English language that computational linguists and cognitive scientists use extensively. For example, WordNet was a key component in IBM’s Jeopardy-playing <a href="https://en.wikipedia.org/wiki/Watson_(computer)">Watson</a> computer system. WordNet groups words into sets of synonyms called synsets. For example, { AND circuit, AND gate } is a synset that represent a logical gate that fires only when all of its inputs fire. WordNet also describes semantic relationships between synsets. One such relationship is the is-a relationship, which connects a hyponym (more specific synset) to a hypernym (more general synset). For example, the synset { gate, logic gate } is a hypernym of { AND circuit, AND gate } because an AND gate is a kind of logic gate.
 
 <h2>WordNet.java</h2>
