@@ -1,16 +1,12 @@
 # WordNet
 
-WordNet is a project completed for Princeton's Algorithms, Part II course, offered by Coursera.  This week's topic is Directed Graphs.
-
-Note:  These files depend on libraries imported from Princeton University's open-source edu.princeton.cs.algs4 package (included in this repo as algs4.jar).  
-
 <ul>
   <li><a target="_blank" href="https://algs4.cs.princeton.edu/code/" >Info and how to install environment</a></li>
   <li><a href="https://algs4.cs.princeton.edu/code/javadoc/" target="_blank" rel="noopener noreferrer">algs4.jar Documentation</a></li>
   <li><a href="https://algs4.cs.princeton.edu/code/algs4.jar">Dowload Princeton's algs4.jar package</a></li>
 </ul>
 
-<b>Assignment. </b>
+<b>CHallenge. </b>
 <a href="https://wordnet.princeton.edu/">WordNet</a> is a semantic lexicon for the English language that computational linguists and cognitive scientists use extensively. For example, WordNet was a key component in IBM’s Jeopardy-playing <a href="https://en.wikipedia.org/wiki/Watson_(computer)">Watson</a> computer system. WordNet groups words into sets of synonyms called synsets. For example, { AND circuit, AND gate } is a synset that represent a logical gate that fires only when all of its inputs fire. WordNet also describes semantic relationships between synsets. One such relationship is the is-a relationship, which connects a hyponym (more specific synset) to a hypernym (more general synset). For example, the synset { gate, logic gate } is a hypernym of { AND circuit, AND gate } because an AND gate is a kind of logic gate.
 
 <h2>WordNet.java</h2>
